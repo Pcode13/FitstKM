@@ -6,8 +6,9 @@ plugins {
 }
 
 kotlin {
+    androidTarget()
     androidTarget {
-        compilations.all {
+        compilations.configureEach {
             compileTaskProvider.configure {
                 compilerOptions {
                     jvmTarget.set(JvmTarget.JVM_1_8)
@@ -28,12 +29,33 @@ kotlin {
     }
 
     sourceSets {
-        commonMain.dependencies {
-            //put your multiplatform dependencies here
+        val commonMain by getting {
+            dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+
+            }
         }
-        commonTest.dependencies {
-            implementation(libs.kotlin.test)
+        val androidMain by getting {
+            dependencies {
+                implementation(libs.androidx.lifecycle.viewmodel.ktx)
+            }
         }
+        val commonTest by getting {
+            dependencies {
+                implementation(libs.kotlin.test)
+            }
+        }
+//        commonMain.dependencies {
+//            //put your multiplatform dependencies here
+//            implementation(libs.kotlinx.coroutines.core)
+//        }
+//        androidMain.dependencies {
+//            implementation(libs.androidx.lifecycle.viewmodel.ktx)
+//        }
+//
+//        commonTest.dependencies {
+//            implementation(libs.kotlin.test)
+//        }
     }
 }
 
@@ -47,4 +69,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+}
+dependencies {
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
 }
